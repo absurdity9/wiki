@@ -33,6 +33,18 @@ def randomentry(request):
     title = articletitle
     return redirect(reverse("wiki", args=[title]))
 
+class searchForm(forms.Form):
+   searchTitle = forms.CharField(widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
+
+
+def searchentry(request, title):
+    list = util.list_entries()
+    if title in list:
+        return redirect(reverse("wiki", args=[title]))
+    else:
+        return HttpResponseRedirect(reverse("wiki", args=[title]))
+
+
 class newArticleform(forms.Form):
    title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
    contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
