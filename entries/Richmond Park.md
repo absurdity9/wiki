@@ -1,0 +1,1 @@
+ichmond Park, in the London Borough of Richmond upon Thames, is the largest of London's Royal Parks and is of national and international importance for wildlife conservation. It was created by Charles I in the 17th century[2] as a deer park.

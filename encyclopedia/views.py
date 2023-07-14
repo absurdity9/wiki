@@ -39,31 +39,25 @@ def randomentry(request):
 class searchForm(forms.Form):
     query = forms.CharField(label="", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
 
-def search(request):
-    
-    # Check if its a post request
+def search(request):  
     if request.method == "POST":
         
         # Take in the data the user submitted and save it as newSearch    
         newSearch = searchForm(request.POST)
-        print("Search fx being called")
         
         if newSearch.is_valid():
             
-            # Isolate the query title from the 'cleaned' version of form data            
-            title = newSearch.cleaned_data['query']
-            print(title)
-            
-            # Get the list of entries
+            query = newSearch.cleaned_data['query']
             list = util.list_entries()
-            print(list)
-            
-            if title in list:
-                print("True")
-                return HttpResponseRedirect(reverse("wiki", args=[title]))
+            # Use list comprehension to make a new list for entries with substrings containing query
+            matchingEntries = [entry for entry in list if query.lower() in entry.lower()]
+            if len(matchingEntries) == 1:
+                return HttpResponseRedirect(reverse("wiki", args=[matchingEntries[0]]))
             else:
-                print("False")                
-                raise Http404("No article was found with this title")
+                print(matchingEntries)
+                return render(request, "encyclopedia/searchresults.html", {
+                    "matchingEntries": matchingEntries
+                })
         else:
             raise Http404("Search is not valid")
     else:
@@ -102,5 +96,3 @@ def new(request):
         "newForm": newArticleform(),
     })
 
-def error(request):
-     return HttpResponse("Error")

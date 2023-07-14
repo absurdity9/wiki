@@ -1,0 +1,1 @@
+Finsbury Park is a public park in the London neighbourhood of Harringay.[1] It is in the area formerly covered by the historic parish of Hornsey, succeeded by the Municipal Borough of Hornsey. It was one of the first of the great London parks laid out in the Victorian era.

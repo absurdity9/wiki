@@ -1,0 +1,1 @@
+The Green Park, one of the Royal Parks of London, is in the City of Westminster, Central London. Across Constitution Hill road, Green Park is to the north of the gardens and semi-circular forecourt of Buckingham Palace. The park is in the middle of a near-continuous chain of green spaces in Westminster that includes St. James' Park, Hyde Park, and Kensington Gardens.

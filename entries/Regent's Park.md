@@ -1,0 +1,1 @@
+Regent's Park (officially The Regent's Park) is one of the Royal Parks of London. It occupies 410 acres (170 ha) of high ground in north-west Inner London, administratively split between the City of Westminster and the Borough of Camden (and historically between Marylebone and Saint Pancras parishes).
