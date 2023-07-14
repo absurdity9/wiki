@@ -7,9 +7,10 @@ from django.http import Http404
 import random
 
 def index(request):
-    return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
-    })
+    return render(request, "encyclopedia/index.html", {    
+        "entries": util.list_entries(),
+        "searchForm": searchForm()
+})
 
 def directory(request, title):
     list = util.list_entries()
@@ -34,35 +35,31 @@ def randomentry(request):
     return redirect(reverse("wiki", args=[title]))
 
 class searchForm(forms.Form):
-   searchTitle = forms.CharField(widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
+    queryTitle = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
 
-
-def searchentry(request, title):
-    list = util.list_entries()
-    if title in list:
-        return redirect(reverse("wiki", args=[title]))
-    else:
-        return HttpResponseRedirect(reverse("wiki", args=[title]))
-
-
+def search(request):
+    return render(request, "search.html", {
+        "searchForm": searchForm
+    }) 
 class newArticleform(forms.Form):
    title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
    contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
 
 # Add a new article
 def new(request):
+    
     # Check if its a post request
     if request.method == "POST":
 
-        # Take in the data the user submitted and save it as form    
-        form = newArticleform(request.POST)
+        # Take in the data the user submitted and save it as newForm    
+        newForm = newArticleform(request.POST)
 
         # Check if form data is valid 
-        if form.is_valid():
+        if newForm.is_valid():
 
             # Isolate the task from the 'cleaned' version of form data
-            title = form.cleaned_data['title']
-            contents = form.cleaned_data['contents']
+            title = newForm.cleaned_data['title']
+            contents = newForm.cleaned_data['contents']
 
             # Save a the new article 
             article = util.save_entry(title, contents) 
@@ -71,9 +68,9 @@ def new(request):
         
         else:
             return render(request, "encyclopedia/new.html", {
-                "form": form 
+                "form": newForm 
     })
     # If its not a post request, show the form        
     return render(request, "encyclopedia/new.html", {
-        "form": newArticleform() 
+        "newForm": newArticleform(),
     })

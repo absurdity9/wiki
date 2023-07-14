@@ -15,8 +15,9 @@
                 <form action="" method="POST">
                     {% csrf_token %}
                     {{ searchForm }}
-                <button type="submit">Search</button>
+                    <input type = "submit" value="Search">
                 </form>
+
                 <div>
                     <a href="{% url 'index' %}">Home</a>
                 </div>
