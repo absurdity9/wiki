@@ -2,15 +2,17 @@ from django import forms
 from django.shortcuts import render, redirect
 from . import util
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect 
+from django.http import HttpResponse
 from django.http import Http404
 import random
 
 def index(request):
-    return render(request, "encyclopedia/index.html", {    
+    context ={
         "entries": util.list_entries(),
         "searchForm": searchForm()
-})
+    }
+    return render(request, "encyclopedia/index.html", context)
 
 def directory(request, title):
     list = util.list_entries()
@@ -35,17 +37,42 @@ def randomentry(request):
     return redirect(reverse("wiki", args=[title]))
 
 class searchForm(forms.Form):
-    queryTitle = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
+    query = forms.CharField(label="", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
 
 def search(request):
-    return render(request, "search.html", {
-        "searchForm": searchForm
-    }) 
+    
+    # Check if its a post request
+    if request.method == "POST":
+        
+        # Take in the data the user submitted and save it as newSearch    
+        newSearch = searchForm(request.POST)
+        print("Search fx being called")
+        
+        if newSearch.is_valid():
+            
+            # Isolate the query title from the 'cleaned' version of form data            
+            title = newSearch.cleaned_data['query']
+            print(title)
+            
+            # Get the list of entries
+            list = util.list_entries()
+            print(list)
+            
+            if title in list:
+                print("True")
+                return HttpResponseRedirect(reverse("wiki", args=[title]))
+            else:
+                print("False")                
+                raise Http404("No article was found with this title")
+        else:
+            raise Http404("Search is not valid")
+    else:
+        raise Http404("Unknown error")
+
 class newArticleform(forms.Form):
    title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
    contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
 
-# Add a new article
 def new(request):
     
     # Check if its a post request
@@ -57,7 +84,7 @@ def new(request):
         # Check if form data is valid 
         if newForm.is_valid():
 
-            # Isolate the task from the 'cleaned' version of form data
+            # Isolate the title and content from the 'cleaned' version of form data
             title = newForm.cleaned_data['title']
             contents = newForm.cleaned_data['contents']
 
@@ -74,3 +101,6 @@ def new(request):
     return render(request, "encyclopedia/new.html", {
         "newForm": newArticleform(),
     })
+
+def error(request):
+     return HttpResponse("Error")

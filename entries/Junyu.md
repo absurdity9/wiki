@@ -1,1 +1,0 @@
-Junyu lives in Colindale.

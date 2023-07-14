@@ -1,0 +1,1 @@
+Bang bang is a foodhall located in Colindale. It is near a 24 hour KFC, a Morrisons supermarket and Asda supermarket.

@@ -12,7 +12,7 @@
         <div class="row">
             <div class="sidebar col-lg-2 col-md-3">
                 <h2>Wiki</h2>
-                <form action="" method="POST">
+                <form method="post" action="{% url 'search' %}">
                     {% csrf_token %}
                     {{ searchForm }}
                     <input type = "submit" value="Search">
@@ -26,6 +26,9 @@
                 </div>
                 <div>
                     <a href="{% url 'random' %}">Random Page </a>
+                </div>
+                <div>
+                    <a href="{% url 'error' %}">Error Page </a>
                 </div>
                 {% block nav %}
                 {% endblock %}
