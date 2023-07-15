@@ -96,3 +96,9 @@ def new(request):
         "newForm": newArticleform(),
     })
 
+def edit(request, title):
+    context ={
+        "article": util.get_entry(title),
+        "title": title
+    }
+    return render(request, "encyclopedia/edit.html", context)
