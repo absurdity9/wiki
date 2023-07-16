@@ -5,5 +5,6 @@
 {% endblock %}
 
 {% block body %}
+    <a href="{% url 'editor' title=title %}#{{ entry }}"> Edit article</a>
     <p>{{ article }}</p>
 {% endblock %}

@@ -10,7 +10,8 @@ import random
 def index(request):
     context ={
         "entries": util.list_entries(),
-        "searchForm": searchForm()
+        "searchForm": searchForm(),
+        "editArticleform": editArticleform(),
     }
     return render(request, "encyclopedia/index.html", context)
 
@@ -102,3 +103,36 @@ def edit(request, title):
         "title": title
     }
     return render(request, "encyclopedia/edit.html", context)
+
+class editArticleform(forms.Form):
+   title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
+   contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
+
+def editor(request, title):
+    
+    # Check if its a post request
+    if request.method == "POST":
+
+        # Take in the data the user submitted and save it as editForm    
+        editForm = editArticleform(request.POST)
+
+        # Check if form data is valid 
+        if editForm.is_valid():
+
+            # Isolate the title and content from the 'cleaned' version of form data
+            title = editForm.cleaned_data['title']
+            contents = editForm.cleaned_data['contents']
+
+            # Save a the new article 
+            article = util.save_entry(title, contents) 
+            # Redirect the user to the article with the title 
+            return HttpResponseRedirect(reverse("wiki", args=[title]))
+        
+        else:
+            return render(request, "encyclopedia/editor.html", {
+                "editArticleform": editArticleform 
+    })
+    # If its not a post request, show the form        
+    return render(request, "encyclopedia/new.html", {
+        "editArticleform": editArticleform(),
+    })
