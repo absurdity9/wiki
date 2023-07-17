@@ -1,11 +1,22 @@
-from django import forms 
-from django.shortcuts import render, redirect
 from . import util
+from django import forms
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect 
 from django.http import HttpResponse
 from django.http import Http404
 import random
+
+class newArticleform(forms.Form):
+   title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
+   contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
+
+class searchForm(forms.Form):
+    query = forms.CharField(label="", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
+
+class editArticleform(forms.Form):
+   title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
+   contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
 
 def index(request):
     context ={
@@ -37,9 +48,6 @@ def randomentry(request):
     title = articletitle
     return redirect(reverse("wiki", args=[title]))
 
-class searchForm(forms.Form):
-    query = forms.CharField(label="", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
-
 def search(request):  
     if request.method == "POST":
         
@@ -64,9 +72,6 @@ def search(request):
     else:
         raise Http404("Unknown error")
 
-class newArticleform(forms.Form):
-   title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
-   contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
 
 def new(request):
     
@@ -104,10 +109,6 @@ def edit(request, title):
     }
     return render(request, "encyclopedia/edit.html", context)
 
-class editArticleform(forms.Form):
-   title = forms.CharField(label="Title:", widget=forms.TextInput(attrs={'style': 'display:block;margin-bottom:10px;'}))    
-   contents = forms.CharField(widget=forms.Textarea(attrs={'style': 'height: 5em; display:block;margin-bottom:10px;'}))
-
 def editor(request, title):
     
     # Check if its a post request
@@ -130,9 +131,9 @@ def editor(request, title):
         
         else:
             return render(request, "encyclopedia/editor.html", {
-                "editArticleform": editArticleform 
+                "editArticleform": editArticleform()
     })
     # If its not a post request, show the form        
-    return render(request, "encyclopedia/new.html", {
-        "editArticleform": editArticleform(),
+    return render(request, "encyclopedia/editor.html", {
+        "editArticleform": editArticleform()
     })
