@@ -134,9 +134,10 @@ def editor(request, title):
     })
     # If its not a post request, show the form        
     else:
+        contents = util.get_entry(title)
         return render(request, "encyclopedia/editor.html", {
         "editArticleform": editArticleform(initial={
             'title': title,
-            'contents': util.get_entry(title),
+            'contents': contents,
             })
     })
