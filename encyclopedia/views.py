@@ -72,7 +72,6 @@ def search(request):
     else:
         raise Http404("Unknown error")
 
-
 def new(request):
     
     # Check if its a post request
@@ -134,6 +133,10 @@ def editor(request, title):
                 "editArticleform": editArticleform()
     })
     # If its not a post request, show the form        
-    return render(request, "encyclopedia/editor.html", {
-        "editArticleform": editArticleform()
+    else:
+        return render(request, "encyclopedia/editor.html", {
+        "editArticleform": editArticleform(initial={
+            'title': title,
+            'contents': util.get_entry(title),
+            })
     })

@@ -1,0 +1,1 @@
+Euston railway station (/ˈjuːstən/ YOO-stən; also known as London Euston) is a central London railway terminus in the London Borough of Camden, managed by Network Rail. It is the southern terminus of the West Coast Main Line, the UK's busiest inter-city railway.
